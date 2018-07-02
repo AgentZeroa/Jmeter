@@ -1,0 +1,40 @@
+————————————————HTTP信息头管理器————————————————
+Content-Type  ： application/json
+Accept-Encoding	：	gzip,deflate
+
+————————————————正则表达式提取器————————————————
+引用名称：		serviceGroupCode
+正则表达式：		"serviceGroupCode":"(.*?)",
+模板：			$1$
+匹配数字（0代表随机）：	1
+缺省值：		error
+
+————————————————响应断言中的正则表达式—————————————
+响应文本——包括
+(0|A)0000000
+
+————————————————变量——————————————————————
+引用文件中的值：
+${__CSVRead(D:\packageCodes_jsyd.txt,0)}
+
+随机数字：
+${__Random(100000000,110000000,userCode)}
+
+指定范围随机取值（指定长度）：
+${__RandomString(2,ABCDEFJHIJKLMNOPQRSTWXYZ,searchWord)}
+
+————————————————全局变量————————————————————
+定义：
+BeanShell PostProcessor的Script中
+${__setProperty(serviceGroupCode,${serviceGroupC},)}
+
+引用：
+${__property(serviceGroupCode)}
+
+————————————————固定定时器———————————————————
+线程延迟（毫秒）：1000，每一个请求发生前延迟
+多个线程组同时压测，分别设置不同的线程数和循环次数，用固定定时器可以模拟现网的请求数量
+
+————————————————调度器—————————————————————
+线程组上打开调度器
+持续时间和启动延迟会覆盖启动时间和结束时间的设置
